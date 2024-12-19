@@ -9,8 +9,6 @@ public class Inventory {
 	
 	@Id
 	private int inventoryId;
-	private int storeId;
-	private int productId;
 	private int productInventory;
 	
 	
@@ -19,11 +17,9 @@ public class Inventory {
 	}
 
 
-	public Inventory(int inventoryId, int storeId, int productId, int productInventory) {
+	public Inventory(int inventoryId,int productInventory) {
 		super();
 		this.inventoryId = inventoryId;
-		this.storeId = storeId;
-		this.productId = productId;
 		this.productInventory = productInventory;
 	}
 
@@ -38,24 +34,6 @@ public class Inventory {
 	}
 
 
-	public int getStoreId() {
-		return storeId;
-	}
-
-
-	public void setStoreId(int storeId) {
-		this.storeId = storeId;
-	}
-
-
-	public int getProductId() {
-		return productId;
-	}
-
-
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
 
 
 	public int getProductInventory() {
