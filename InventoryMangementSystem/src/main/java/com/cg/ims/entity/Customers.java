@@ -6,8 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "customers")
 public class Customers {
 
@@ -27,36 +29,13 @@ public class Customers {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Customers(int customerId, String emailAddress, String fullName) {
+	public Customers(String emailAddress, String fullName) {
 		super();
-		this.customerId = customerId;
 		this.emailAddress = emailAddress;
 		this.fullName = fullName;
 	}
 
-	public int getCustomerId() {
-		return customerId;
-	}
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
 	
 	
 }
