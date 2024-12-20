@@ -4,23 +4,24 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "orders")
 public class Orders {
 	
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "order_id")
 	private int orderID;
 	
@@ -37,4 +38,14 @@ public class Orders {
 	@ManyToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "store_id")
 	private Stores store;
+
+	public Orders(LocalDateTime orderTms, Customers customer, String orderStatus, Stores store) {
+		super();
+		this.orderTms = orderTms;
+		this.customer = customer;
+		this.orderStatus = orderStatus;
+		this.store = store;
+	}
+	
+	
 }

@@ -14,30 +14,36 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "inventory")
-public class Inventory {
+@Table(name = "shipments")
+public class Shipments {
+
 	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int inventoryId;
+	@Column(name = "shipment_id")
+	private int shipmentsId;
 	
 	@ManyToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "store_id")
 	private Stores store;
 	
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "product_id")
-	private Products product;
+	@JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+	private Customers customer;
 	
-	@Column(name = "product_inventory")
-	private int productInventory;
+	@Column(name = "delivery_address")
+	private String deliveryAddress;
+	
+	@Column(name = "shipmemnt_status")
+	private String shipmentStatus;
 
-	public Inventory(Stores store, Products product, int productInventory) {
+	public Shipments(Stores store, Customers customer, String deliveryAddress, String shipmentStatus) {
 		super();
 		this.store = store;
-		this.product = product;
-		this.productInventory = productInventory;
+		this.customer = customer;
+		this.deliveryAddress = deliveryAddress;
+		this.shipmentStatus = shipmentStatus;
 	}
 	
 	
