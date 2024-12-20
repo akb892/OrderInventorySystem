@@ -5,23 +5,22 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "stores")
 public class Stores {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "store_id")
 	private int storeId;
 	
@@ -58,20 +57,7 @@ public class Stores {
 	@Column(name = "logo_last_updated")
 	private LocalDate logoLastUpdated;
 
-	public Stores(String storeName, String webAddress, String physicalAddress, Double latitude, Double longitude,
-			byte[] logo, String logoMimeType, String logoFileName, String logoCharset, LocalDate logoLastUpdated) {
-		super();
-		this.storeName = storeName;
-		this.webAddress = webAddress;
-		this.physicalAddress = physicalAddress;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.logo = logo;
-		this.logoMimeType = logoMimeType;
-		this.logoFileName = logoFileName;
-		this.logoCharset = logoCharset;
-		this.logoLastUpdated = logoLastUpdated;
-	}
+	
 	
 	
 	

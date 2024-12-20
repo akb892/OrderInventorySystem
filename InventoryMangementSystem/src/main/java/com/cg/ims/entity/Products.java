@@ -2,21 +2,20 @@ package com.cg.ims.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "products")
 public class Products {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_id")
 	private int productId;
 	
@@ -41,16 +40,6 @@ public class Products {
 	@Column(name = "rating")
 	private int rating;
 
-
-	public Products(String productName, Double unitPrice, String color, String brand, String size, int rating) {
-		super();
-		this.productName = productName;
-		this.unitPrice = unitPrice;
-		this.color = color;
-		this.brand = brand;
-		this.size = size;
-		this.rating = rating;
-	}
 	
 	
 	
