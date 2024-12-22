@@ -127,7 +127,17 @@ public class OrderService implements IOrdersService {
 	@Override
 	public void markOrderAsCancelled(int id) {
 		// TODO Auto-generated method stub
-
+		OrdersDto od  = new OrdersDto();
+		od.setOrderID(id);
+		if(od.getOrderID()>0) {
+			Optional<Orders> op = repo.findById(id);
+			if(op.isPresent()) {
+				Orders o = new Orders();
+				o = op.get();
+				o.setOrderStatus("Cancelled");
+				repo.saveAndFlush(o);
+			}
+		}
 	}
 
 	@Override
