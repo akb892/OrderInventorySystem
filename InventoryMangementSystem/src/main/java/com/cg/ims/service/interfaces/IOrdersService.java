@@ -6,13 +6,14 @@ import java.util.Map;
 
 
 import com.cg.ims.dto.OrdersDto;
+import com.cg.ims.entity.Orders;
 
 public interface IOrdersService {
 
-	List<OrdersDto> fetchAllOrders();
-	void createNewOrders(OrdersDto od);
+	List<Orders> fetchAllOrders();
+	OrdersDto createNewOrders(OrdersDto od);
 	void updateOrdersByObject(OrdersDto od);
-	void deleteOrder(int id);
+	String deleteOrder(int id);
 	Map<String, Integer> countOfOrders();
 	OrdersDto getOrdersByStoreName(String storeName);
 	OrdersDto getOrdersDetailsById(int id);

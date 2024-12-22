@@ -1,10 +1,11 @@
 package com.cg.ims.dto;
 
 import java.time.LocalDateTime;
-
-import org.apache.catalina.Store;
+import java.util.List;
 
 import com.cg.ims.entity.Customers;
+import com.cg.ims.entity.OrderItems;
+import com.cg.ims.entity.Stores;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;
@@ -28,29 +29,30 @@ public class OrdersDto {
 	@Size(max = 10, message = "Order status must not exceed 10 characters")
 	private String orderStatus;
 	
-	private Store stores;
+	private Stores store;
+	
+	
+	private List<OrderItems> oi;
 	
 	
 	public OrdersDto() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
 
 
-	public OrdersDto(int orderID, LocalDateTime orderTms, Customers customer,
-			@Size(max = 10, message = "Order status must not exceed 10 characters") String orderStatus, Store stores) {
+	public OrdersDto(
+			@NotNull(message = "Order id cannot be null") @NotBlank(message = "Order id cannot be blank") int orderID,
+			LocalDateTime orderTms, Customers customer,
+			@Size(max = 10, message = "Order status must not exceed 10 characters") String orderStatus, Stores store,
+			List<OrderItems> oi) {
 		super();
 		this.orderID = orderID;
 		this.orderTms = orderTms;
 		this.customer = customer;
 		this.orderStatus = orderStatus;
-		this.stores = stores;
+		this.store = store;
+		this.oi = oi;
 	}
-
-
-
 
 
 	public int getOrderID() {
@@ -93,15 +95,24 @@ public class OrdersDto {
 	}
 
 
-	public Store getStores() {
-		return stores;
+	public Stores getStore() {
+		return store;
 	}
 
 
-	public void setStores(Store stores) {
-		this.stores = stores;
+	public void setStore(Stores store) {
+		this.store = store;
 	}
-	
+
+
+	public List<OrderItems> getOi() {
+		return oi;
+	}
+
+
+	public void setOi(List<OrderItems> oi) {
+		this.oi = oi;
+	}
 	
 	
 	

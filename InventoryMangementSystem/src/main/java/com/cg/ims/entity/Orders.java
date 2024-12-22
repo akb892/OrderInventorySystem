@@ -6,27 +6,21 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+
+
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "orders")
 public class Orders {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "order_id")
 	private int orderID;
 	
@@ -46,4 +40,70 @@ public class Orders {
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItems> oi;
+	
+	public Orders() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Orders(int orderID, LocalDateTime orderTms, Customers customer, String orderStatus, Stores store,
+			List<OrderItems> oi) {
+		super();
+		this.orderID = orderID;
+		this.orderTms = orderTms;
+		this.customer = customer;
+		this.orderStatus = orderStatus;
+		this.store = store;
+		this.oi = oi;
+	}
+
+	public int getOrderID() {
+		return orderID;
+	}
+
+	public void setOrderID(int orderID) {
+		this.orderID = orderID;
+	}
+
+	public LocalDateTime getOrderTms() {
+		return orderTms;
+	}
+
+	public void setOrderTms(LocalDateTime orderTms) {
+		this.orderTms = orderTms;
+	}
+
+	public Customers getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customers customer) {
+		this.customer = customer;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Stores getStore() {
+		return store;
+	}
+
+	public void setStore(Stores store) {
+		this.store = store;
+	}
+
+	public List<OrderItems> getOi() {
+		return oi;
+	}
+
+	public void setOi(List<OrderItems> oi) {
+		this.oi = oi;
+	}
+	
+	
+	
 }
