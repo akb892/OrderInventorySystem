@@ -148,8 +148,25 @@ public class OrderService implements IOrdersService {
 
 	@Override
 	public List<OrdersDto> getOrdersByStatus(String status) {
-		// TODO Auto-generated method stub
-		return null;
+		List<OrdersDto> li = new ArrayList<>();
+		OrdersDto od = new OrdersDto();
+		od.setOrderStatus(status);
+		if(od.getOrderStatus() != null) {
+			List<Orders> o = repo.findByOrderStatus(status);
+			for(Orders or : o) {
+				od.setCustomer(or.getCustomer());
+				od.setOi(or.getOi());
+				od.setOrderID(or.getOrderID());
+				od.setOrderStatus(or.getOrderStatus());
+				od.setOrderTms(or.getOrderTms());
+				od.setStore(or.getStore());
+				li.add(od);
+			}
+			return li;
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
