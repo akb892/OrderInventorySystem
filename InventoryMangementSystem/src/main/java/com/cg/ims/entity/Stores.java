@@ -2,11 +2,14 @@ package com.cg.ims.entity;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,9 +59,9 @@ public class Stores {
 	
 	@Column(name = "logo_last_updated")
 	private LocalDate logoLastUpdated;
+	
+	
+	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+	private List<Orders> oi;
 
-	
-	
-	
-	
 }

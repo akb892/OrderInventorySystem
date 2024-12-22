@@ -1,6 +1,7 @@
 package com.cg.ims.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,19 +74,48 @@ public class OrderService implements IOrdersService {
 
 	@Override
 	public Map<String, Integer> countOfOrders() {
-		return null;
+		List<Object[]> results = repo.countOrdersByStatus();
+		Map<String , Integer> m = new HashMap<>();
+		
+		for(Object[] result : results) {
+			String status = (String) result[0];
+			Integer count = (Integer)result[1];
+			m.put(status, count);
+		}
+		
+		return m;
 	}
 
 	@Override
-	public OrdersDto getOrdersByStoreName(String storeName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OrdersDto> getOrdersByStoreName(String storeName) {
+		List<OrdersDto> li =  new ArrayList<>();
+		return li;
 	}
 
 	@Override
 	public OrdersDto getOrdersDetailsById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		if(id > 0) {
+			Optional<Orders> op = repo.findById(id);
+			if(op.isPresent()) {
+				Orders o = op.get();
+				OrdersDto od = new OrdersDto();
+				od.setCustomer(o.getCustomer());
+				od.setOi(o.getOi());
+				od.setOrderID(o.getOrderID());
+				od.setOrderStatus(o.getOrderStatus());
+				od.setOrderTms(o.getOrderTms());
+				od.setStore(o.getStore());
+				
+				return od;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
+		
 	}
 
 	@Override

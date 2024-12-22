@@ -15,7 +15,7 @@ public interface IOrdersService {
 	void updateOrdersByObject(OrdersDto od);
 	String deleteOrder(int id);
 	Map<String, Integer> countOfOrders();
-	OrdersDto getOrdersByStoreName(String storeName);
+	List<OrdersDto> getOrdersByStoreName(String storeName);
 	OrdersDto getOrdersDetailsById(int id);
 	List<OrdersDto> getOrdersBySpecificCustomer(int customerId);
 	void markOrderAsCancelled(int id);
