@@ -1,6 +1,6 @@
 package com.cg.ims.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.cg.ims.dao.IOrderRepo;
 import com.cg.ims.dto.OrdersDto;
@@ -170,9 +171,27 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public List<OrdersDto> getOrderWithinDateRange(LocalDate startDate, LocalDate endDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OrdersDto> getOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+		Assert.notNull(startDate, "Start Date cannot be null");
+		Assert.notNull(endDate, "End Date cannot be null");
+		OrdersDto od = new OrdersDto();
+		List<OrdersDto> li = new ArrayList<>();
+		if(startDate.isBefore(endDate)) {
+			List<Orders> o = repo.findOrderWithinDateRange(startDate, endDate);
+			for(Orders or : o) {
+				od.setCustomer(or.getCustomer());
+				od.setOi(or.getOi());
+				od.setOrderID(or.getOrderID());
+				od.setOrderStatus(or.getOrderStatus());
+				od.setOrderTms(or.getOrderTms());
+				od.setStore(or.getStore());
+				li.add(od);
+			}
+			return li;
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override

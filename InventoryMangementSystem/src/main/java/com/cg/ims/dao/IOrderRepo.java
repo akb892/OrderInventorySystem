@@ -1,5 +1,6 @@
 package com.cg.ims.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ public interface IOrderRepo extends JpaRepository<Orders, Integer> {
 	@Query("select o.orderStatus as status, count(o) as count from Orders o group by o.orderStatus")
 	List<Object[]> countOrdersByStatus();
 	List<Orders> findByOrderStatus(String orderStatus);
+	@Query("select o from Orders o where o.orderTms between :startDate and :endDate")
+	List<Orders> findOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate);
 }

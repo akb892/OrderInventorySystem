@@ -1,6 +1,6 @@
 package com.cg.ims.service.interfaces;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public interface IOrdersService {
 	void markOrderAsCancelled(int id);
 	OrdersDto getSingleOrderById(int orderId);
 	List<OrdersDto> getOrdersByStatus(String status);
-	List<OrdersDto> getOrderWithinDateRange(LocalDate startDate, LocalDate endDate);
+	List<OrdersDto> getOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate);
 	OrdersDto getOrderByCustomerEmail(String email);
 	
 	
