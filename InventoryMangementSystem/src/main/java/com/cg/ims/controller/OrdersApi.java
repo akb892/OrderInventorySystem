@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cg.ims.dto.OrdersDto;
 import com.cg.ims.entity.Orders;
 import com.cg.ims.exception.CustomerNotFoundException;
+import com.cg.ims.exception.OrderAlreadyExistsException;
 import com.cg.ims.exception.OrdersNotFoundException;
+import com.cg.ims.exception.StoreNotFoundException;
 import com.cg.ims.service.interfaces.IOrdersService;
 
 import jakarta.validation.Valid;
@@ -38,19 +40,19 @@ public class OrdersApi {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> createNewOrders(@RequestBody @Valid OrdersDto od) {
+	public ResponseEntity<String> createNewOrders(@RequestBody @Valid OrdersDto od) throws OrderAlreadyExistsException {
 		serv.createNewOrders(od);
 		return new ResponseEntity<String>("Record created successfully",HttpStatus.OK);
 	}
 	
 	@PutMapping
-	public ResponseEntity<String> updateOrder(@RequestBody @Valid OrdersDto od) {
+	public ResponseEntity<String> updateOrder(@RequestBody @Valid OrdersDto od) throws OrdersNotFoundException {
 		serv.updateOrdersByObject(od);
 		return new ResponseEntity<String>("Record Updated successfully", HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteOrder(@PathVariable int id){
+	public ResponseEntity<String> deleteOrder(@PathVariable int id) throws OrdersNotFoundException{
 		serv.deleteOrder(id);
 		return new ResponseEntity<String>("Record deleted successfully",HttpStatus.OK);
 	}
@@ -62,7 +64,7 @@ public class OrdersApi {
 	}
 	
 	@GetMapping("/{store}")
-	public ResponseEntity<List<OrdersDto>> getOrdersByStoreName(@PathVariable String store){
+	public ResponseEntity<List<OrdersDto>> getOrdersByStoreName(@PathVariable String store) throws StoreNotFoundException, OrdersNotFoundException{
 		List<OrdersDto> li = serv.getOrdersByStoreName(store);
 		return new ResponseEntity<List<OrdersDto>>(li,HttpStatus.OK);
 	}

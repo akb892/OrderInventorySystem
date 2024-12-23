@@ -22,6 +22,7 @@ import com.cg.ims.entity.Stores;
 import com.cg.ims.exception.CustomerNotFoundException;
 import com.cg.ims.exception.OrderAlreadyExistsException;
 import com.cg.ims.exception.OrdersNotFoundException;
+import com.cg.ims.exception.StoreNotFoundException;
 import com.cg.ims.service.interfaces.IOrdersService;
 
 
@@ -60,30 +61,33 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public void updateOrdersByObject(OrdersDto od) {
+	public void updateOrdersByObject(OrdersDto od) throws OrdersNotFoundException {
 		// TODO Auto-generated method stub
 		Orders o = new Orders();
+		Optional<Orders> op = repo.findById(od.getOrderID());
+		if(op.isPresent()) {
 		o.setCustomer(od.getCustomer());
 		o.setOi(od.getOi());
 		o.setOrderID(od.getOrderID());
 		o.setOrderStatus(od.getOrderStatus());
 		o.setOrderTms(od.getOrderTms());
 		o.setStore(od.getStore());
-		Optional<Orders> op = repo.findById(od.getOrderID());
-		if(op.isPresent()) {
-			repo.saveAndFlush(o);
+		repo.saveAndFlush(o);
+		}
+		else {
+			throw new OrdersNotFoundException("Orders with " + od.getOrderID() + " not found");
 		}
 	}
 
 	@Override
-	public String deleteOrder(int id) {
+	public String deleteOrder(int id) throws OrdersNotFoundException{
 		Optional<Orders> op = repo.findById(id);
 		if (op.isPresent()) {
 			repo.delete(op.get());
-			return "Order Deleted";
 		} else {
-			return "Order Not found";
+			throw new OrdersNotFoundException("Order with " + id + " not found");
 		}
+		return null;
 	}
 
 	@Override
@@ -101,11 +105,17 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public List<OrdersDto> getOrdersByStoreName(String storeName) {
+	public List<OrdersDto> getOrdersByStoreName(String storeName) throws StoreNotFoundException, OrdersNotFoundException {
 		List<OrdersDto> od  = new ArrayList<>();
 		List<Stores> s = repo2.findByStoreName(storeName);
+		if(s.isEmpty()) {
+			throw new StoreNotFoundException("Store name " + storeName + " not found");
+		}
 		for(Stores s1 : s) {
 			List<Orders> li = new ArrayList<>(s1.getOi());
+			if(li.isEmpty()) {
+				throw new OrdersNotFoundException("Orders with Store name " + storeName + " not found");
+			}
 			OrdersDto od1 = new OrdersDto();
 			for(Orders o : li) {
 				od1.setCustomer(o.getCustomer());

@@ -10,15 +10,16 @@ import com.cg.ims.entity.Orders;
 import com.cg.ims.exception.CustomerNotFoundException;
 import com.cg.ims.exception.OrderAlreadyExistsException;
 import com.cg.ims.exception.OrdersNotFoundException;
+import com.cg.ims.exception.StoreNotFoundException;
 
 public interface IOrdersService {
 
 	List<Orders> fetchAllOrders();
 	OrdersDto createNewOrders(OrdersDto od) throws OrderAlreadyExistsException;
-	void updateOrdersByObject(OrdersDto od);
-	String deleteOrder(int id);
+	void updateOrdersByObject(OrdersDto od) throws OrdersNotFoundException;
+	String deleteOrder(int id) throws OrdersNotFoundException;
 	Map<String, Integer> countOfOrders();
-	List<OrdersDto> getOrdersByStoreName(String storeName);
+	List<OrdersDto> getOrdersByStoreName(String storeName) throws StoreNotFoundException,OrdersNotFoundException;
 	OrdersDto getOrdersDetailsById(int id) throws OrdersNotFoundException;
 	List<OrdersDto> getOrdersBySpecificCustomer(int customerId) throws CustomerNotFoundException;
 	void markOrderAsCancelled(int id);
