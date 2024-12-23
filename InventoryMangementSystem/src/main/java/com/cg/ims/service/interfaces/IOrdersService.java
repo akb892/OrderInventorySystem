@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.cg.ims.dto.OrdersDto;
 import com.cg.ims.entity.Orders;
+import com.cg.ims.exception.OrdersNotFoundException;
 
 public interface IOrdersService {
 
@@ -16,7 +17,7 @@ public interface IOrdersService {
 	String deleteOrder(int id);
 	Map<String, Integer> countOfOrders();
 	List<OrdersDto> getOrdersByStoreName(String storeName);
-	OrdersDto getOrdersDetailsById(int id);
+	OrdersDto getOrdersDetailsById(int id) throws OrdersNotFoundException;
 	List<OrdersDto> getOrdersBySpecificCustomer(int customerId);
 	void markOrderAsCancelled(int id);
 	OrdersDto getSingleOrderById(int orderId);

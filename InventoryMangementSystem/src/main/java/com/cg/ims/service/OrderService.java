@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 import com.cg.ims.dao.IOrderRepo;
 import com.cg.ims.dto.OrdersDto;
 import com.cg.ims.entity.Orders;
+import com.cg.ims.exception.OrdersNotFoundException;
 import com.cg.ims.service.interfaces.IOrdersService;
 
 @Service
@@ -94,7 +95,7 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public OrdersDto getOrdersDetailsById(int id) {
+	public OrdersDto getOrdersDetailsById(int id) throws OrdersNotFoundException{
 		if(id > 0) {
 			Optional<Orders> op = repo.findById(id);
 			if(op.isPresent()) {
@@ -110,7 +111,7 @@ public class OrderService implements IOrdersService {
 				return od;
 			}
 			else {
-				return null;
+				throw new OrdersNotFoundException("Orders with " + id + " not found");
 			}
 		}
 		else {
