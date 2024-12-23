@@ -1,4 +1,4 @@
-package com.cg.ims.service;
+package com.cg.ims.service.interfaces;
 
 import java.util.List;
 

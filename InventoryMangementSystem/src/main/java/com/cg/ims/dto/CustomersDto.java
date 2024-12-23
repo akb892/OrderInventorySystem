@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class CustomersDto {
+	
+	@NotNull(message = "Customer id cannot be null")
+	@NotBlank(message = "Customer id cannot be blank")
 	private int customerId;
 	@Email(message = "Invalid Email")
 	private String emailAddress;

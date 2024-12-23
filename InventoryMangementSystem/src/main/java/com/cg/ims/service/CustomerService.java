@@ -6,16 +6,17 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cg.ims.dao.ICustomerRepository;
+import com.cg.ims.dao.ICustomerRepo;
 import com.cg.ims.dto.CustomersDto;
 import com.cg.ims.entity.Customers;
 import com.cg.ims.exception.CustomerNotFoundException;
+import com.cg.ims.service.interfaces.ICustomerService;
 
 @Service
 public class CustomerService implements ICustomerService {
 
 	@Autowired
-	private ICustomerRepository repo;
+	private ICustomerRepo repo;
 
 	@Override
 	public List<CustomersDto> getAllCustomers() {

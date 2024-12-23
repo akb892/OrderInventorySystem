@@ -1,5 +1,7 @@
 package com.cg.ims.entity;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,22 +22,35 @@ public class Customers {
 
 	@Column(name = "full_name")
 	private String fullName;
-<<<<<<< HEAD
+
 	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-	private Orders order;
+	private List<Orders> order;
 	
-=======
+
 
 	public Customers() {
 	}
 
-	public Customers(int customerId, String emailAddress, String fullName) {
+	
+
+	
+
+
+
+	public Customers(int customerId, String emailAddress, String fullName, List<Orders> order) {
 		super();
 		this.customerId = customerId;
 		this.emailAddress = emailAddress;
 		this.fullName = fullName;
+		this.order = order;
 	}
+
+
+
+
+
+
 
 	public int getCustomerId() {
 		return customerId;
@@ -61,11 +76,31 @@ public class Customers {
 		this.fullName = fullName;
 	}
 
-	@Override
-	public String toString() {
-		return "Customers [customerId=" + customerId + ", emailAddress=" + emailAddress + ", fullName=" + fullName
-				+ "]";
+
+
+
+
+
+
+	public List<Orders> getOrder() {
+		return order;
 	}
 
->>>>>>> 84496aa7708d65e19ba759ad501205b99c3a9bde
+
+
+
+
+
+
+	public void setOrder(List<Orders> order) {
+		this.order = order;
+	}
+
+
+
+	
+
+	
+
+
 }

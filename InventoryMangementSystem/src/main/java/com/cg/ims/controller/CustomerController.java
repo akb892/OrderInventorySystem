@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.ims.service.ICustomerService;
+import com.cg.ims.service.interfaces.ICustomerService;
 
 @RestController
 @RequestMapping("customers")

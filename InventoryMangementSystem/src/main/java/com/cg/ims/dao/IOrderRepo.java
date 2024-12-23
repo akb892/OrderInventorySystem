@@ -17,4 +17,5 @@ public interface IOrderRepo extends JpaRepository<Orders, Integer> {
 	List<Orders> findByOrderStatus(String orderStatus);
 	@Query("select o from Orders o where o.orderTms between :startDate and :endDate")
 	List<Orders> findOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate);
+	List<Orders> findByOrderID(int orderID);
 }
