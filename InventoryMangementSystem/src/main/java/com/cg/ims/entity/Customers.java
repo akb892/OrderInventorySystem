@@ -4,9 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "customers")
@@ -54,6 +51,12 @@ public class Customers {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	@Override
+	public String toString() {
+		return "Customers [customerId=" + customerId + ", emailAddress=" + emailAddress + ", fullName=" + fullName
+				+ "]";
 	}
 
 }
