@@ -24,9 +24,9 @@ public interface IOrdersService {
 	List<OrdersDto> getOrdersBySpecificCustomer(int customerId) throws CustomerNotFoundException;
 	void markOrderAsCancelled(int id);
 	OrdersDto getSingleOrderById(int orderId) throws OrdersNotFoundException;
-	List<OrdersDto> getOrdersByStatus(String status);
-	List<OrdersDto> getOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate);
-	List<OrdersDto> getOrderByCustomerEmail(String email);
+	List<OrdersDto> getOrdersByStatus(String status) throws OrdersNotFoundException;
+	List<OrdersDto> getOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) throws OrdersNotFoundException;
+	List<OrdersDto> getOrderByCustomerEmail(String email) throws CustomerNotFoundException, OrdersNotFoundException;
 	
 	
 	

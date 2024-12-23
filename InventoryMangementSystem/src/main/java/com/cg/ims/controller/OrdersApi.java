@@ -94,19 +94,19 @@ public class OrdersApi {
 	}
 	
 	@GetMapping("/status/{status}")
-	public ResponseEntity<List<OrdersDto>> getOrderByStatus(@PathVariable String status){
+	public ResponseEntity<List<OrdersDto>> getOrderByStatus(@PathVariable String status) throws OrdersNotFoundException{
 		List<OrdersDto> od = serv.getOrdersByStatus(status);
 		return new ResponseEntity<List<OrdersDto>>(od, HttpStatus.OK);
 	}
 	
 	@GetMapping("/date/{startdate}/{enddate}")
-	public ResponseEntity<List<OrdersDto>> getOrderWithinDateRange(@PathVariable LocalDateTime startdate, @PathVariable LocalDateTime enddate){
+	public ResponseEntity<List<OrdersDto>> getOrderWithinDateRange(@PathVariable LocalDateTime startdate, @PathVariable LocalDateTime enddate) throws OrdersNotFoundException{
 		List<OrdersDto> od =  serv.getOrderWithinDateRange(startdate, enddate);
 		return new ResponseEntity<List<OrdersDto>>(od, HttpStatus.OK);
 	}
 	
 	@GetMapping("/customer/{email}")
-	public ResponseEntity<List<OrdersDto>> getOrderByCustomerEmail(@PathVariable String email){
+	public ResponseEntity<List<OrdersDto>> getOrderByCustomerEmail(@PathVariable String email) throws CustomerNotFoundException, OrdersNotFoundException{
 		List<OrdersDto> od = serv.getOrderByCustomerEmail(email);
 		return new ResponseEntity<List<OrdersDto>>(od, HttpStatus.OK);
 	}

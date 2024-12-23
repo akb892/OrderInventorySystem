@@ -215,12 +215,15 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public List<OrdersDto> getOrdersByStatus(String status) {
+	public List<OrdersDto> getOrdersByStatus(String status) throws OrdersNotFoundException {
 		List<OrdersDto> li = new ArrayList<>();
 		OrdersDto od = new OrdersDto();
 		od.setOrderStatus(status);
 		if(od.getOrderStatus() != null) {
 			List<Orders> o = repo.findByOrderStatus(status);
+			if(o.isEmpty()) {
+				throw new OrdersNotFoundException("Order with status " + status + " not found");
+			}
 			for(Orders or : o) {
 				od.setCustomer(or.getCustomer());
 				od.setOi(or.getOi());
@@ -232,19 +235,20 @@ public class OrderService implements IOrdersService {
 			}
 			return li;
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
 	@Override
-	public List<OrdersDto> getOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+	public List<OrdersDto> getOrderWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) throws OrdersNotFoundException {
 		Assert.notNull(startDate, "Start Date cannot be null");
 		Assert.notNull(endDate, "End Date cannot be null");
 		OrdersDto od = new OrdersDto();
 		List<OrdersDto> li = new ArrayList<>();
 		if(startDate.isBefore(endDate)) {
 			List<Orders> o = repo.findOrderWithinDateRange(startDate, endDate);
+			if(o.isEmpty()) {
+				throw new OrdersNotFoundException("Orders with start date " + startDate + " and with end date " + endDate + " not Found");
+			}
 			for(Orders or : o) {
 				od.setCustomer(or.getCustomer());
 				od.setOi(or.getOi());
@@ -262,11 +266,17 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public List<OrdersDto> getOrderByCustomerEmail(String email) {
+	public List<OrdersDto> getOrderByCustomerEmail(String email) throws CustomerNotFoundException, OrdersNotFoundException {
 		List<OrdersDto> od = new ArrayList<>();
 		List<Customers> c = repo1.findByEmailAddress(email);
+		if(c.isEmpty()) {
+			throw new CustomerNotFoundException("Customer with emailId " + email + " not found");
+		}
 		for(Customers c1 : c) {
 			List<Orders> o = new ArrayList<>(c1.getOrder());
+			if(o.isEmpty()) {
+				throw new OrdersNotFoundException("Orders with email id " + email + " doesnot exists");
+			}
 			OrdersDto od1 = new OrdersDto();
 			for(Orders o1 : o) {
 				od1.setCustomer(o1.getCustomer());
