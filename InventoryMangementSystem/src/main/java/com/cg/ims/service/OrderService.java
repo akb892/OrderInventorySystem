@@ -20,6 +20,7 @@ import com.cg.ims.entity.Customers;
 import com.cg.ims.entity.Orders;
 import com.cg.ims.entity.Stores;
 import com.cg.ims.exception.CustomerNotFoundException;
+import com.cg.ims.exception.OrderAlreadyExistsException;
 import com.cg.ims.exception.OrdersNotFoundException;
 import com.cg.ims.service.interfaces.IOrdersService;
 
@@ -40,12 +41,12 @@ public class OrderService implements IOrdersService {
 	}
 
 	@Override
-	public OrdersDto createNewOrders(OrdersDto od) {
+	public OrdersDto createNewOrders(OrdersDto od) throws OrderAlreadyExistsException {
 		// TODO Auto-generated method stub
 		Orders o = new Orders();
 		Optional<Orders> op = repo.findById(od.getOrderID());
 		if (op.isPresent()) {
-			return null;
+			throw new OrderAlreadyExistsException("Orders with " + od.getOrderID()+ " already exists");
 		} else {
 			o.setCustomer(od.getCustomer());
 			o.setOi(od.getOi());

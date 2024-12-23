@@ -8,12 +8,13 @@ import java.util.Map;
 import com.cg.ims.dto.OrdersDto;
 import com.cg.ims.entity.Orders;
 import com.cg.ims.exception.CustomerNotFoundException;
+import com.cg.ims.exception.OrderAlreadyExistsException;
 import com.cg.ims.exception.OrdersNotFoundException;
 
 public interface IOrdersService {
 
 	List<Orders> fetchAllOrders();
-	OrdersDto createNewOrders(OrdersDto od);
+	OrdersDto createNewOrders(OrdersDto od) throws OrderAlreadyExistsException;
 	void updateOrdersByObject(OrdersDto od);
 	String deleteOrder(int id);
 	Map<String, Integer> countOfOrders();
