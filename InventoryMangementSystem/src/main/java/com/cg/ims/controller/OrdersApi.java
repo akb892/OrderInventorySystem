@@ -33,7 +33,7 @@ public class OrdersApi {
 	@Autowired
 	private IOrdersService serv;
 	
-	@GetMapping
+	@GetMapping("/getall")
 	public ResponseEntity<List<Orders>> fetchAllOrders() {
 		List<Orders> o = serv.fetchAllOrders();
 		return new ResponseEntity<List<Orders>>(o,HttpStatus.OK);

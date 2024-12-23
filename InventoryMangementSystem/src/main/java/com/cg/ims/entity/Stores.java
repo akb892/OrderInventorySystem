@@ -1,6 +1,7 @@
 package com.cg.ims.entity;
 
 
+import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,9 +40,9 @@ public class Stores {
 	@Column(name = "logo")
 	private Double longitude;
 	
-	@Lob
-	@Column(name = "logo")
-	private byte[] logo;
+
+	@Column(name = "logo", insertable = false, updatable = false)
+	private Blob logo;
 	
 	@Column(name = "logo_mime_type")
 	private String logoMimeType;
@@ -59,9 +60,12 @@ public class Stores {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<Orders> oi;
 
+	public Stores() {
+		
+	}
 
 	public Stores(int storeId, String storeName, String webAddress, String physicalAddress, Double latitude,
-			Double longitude, byte[] logo, String logoMimeType, String logoFileName, String logoCharset,
+			Double longitude, Blob logo, String logoMimeType, String logoFileName, String logoCharset,
 			LocalDate logoLastUpdated, List<Orders> oi) {
 		super();
 		this.storeId = storeId;
@@ -139,12 +143,12 @@ public class Stores {
 	}
 
 
-	public byte[] getLogo() {
+	public Blob getLogo() {
 		return logo;
 	}
 
 
-	public void setLogo(byte[] logo) {
+	public void setLogo(Blob logo) {
 		this.logo = logo;
 	}
 

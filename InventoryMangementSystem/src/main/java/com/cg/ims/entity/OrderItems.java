@@ -1,7 +1,12 @@
 package com.cg.ims.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -10,7 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "order_items")
 public class OrderItems {
 	
-	
+	@Id
 	@ManyToOne
 	@JoinColumn(name= "order_id", referencedColumnName = "order_id")
 	private Orders order;
@@ -23,7 +28,7 @@ public class OrderItems {
 	private Products product;
 	
 	@Column(name = "unit_price")
-	private Double unitPrice;
+	private BigDecimal unitPrice;
 	
 	@Column(name = "quantity")
 	private int quantity;
@@ -37,7 +42,7 @@ public class OrderItems {
 		// TODO Auto-generated constructor stub
 	}
 
-	public OrderItems(Orders order, int lineItemId, Products product, Double unitPrice, int quantity,
+	public OrderItems(Orders order, int lineItemId, Products product, BigDecimal unitPrice, int quantity,
 			Shipments shipment) {
 		super();
 		this.order = order;
@@ -72,11 +77,11 @@ public class OrderItems {
 		this.product = product;
 	}
 
-	public Double getUnitPrice() {
+	public BigDecimal getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(Double unitPrice) {
+	public void setUnitPrice(BigDecimal unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
