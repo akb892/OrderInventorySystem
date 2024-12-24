@@ -12,96 +12,132 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-
-
-
+/**
+ * Entity class representing an Order in the system.
+ * Maps to the "orders" table in the database.
+ */
 @Entity
 @Table(name = "orders")
 public class Orders {
-	
-	
-	@Id
-	@Column(name = "order_id")
-	private int orderID;
-	
-	@Column(name = "order_tms")
-	private LocalDateTime orderTms;
-	
-	@ManyToOne
-	@JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-	private Customers customer;
-	
-	@Column(name = "order_status")
-	private String orderStatus;
-	
-	@ManyToOne
-	@JoinColumn(name = "store_id", referencedColumnName = "store_id")
-	private Stores store;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-	private List<OrderItems> oi;
-	
-	public Orders() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * Unique identifier for each order.
+     */
+    @Id
+    @Column(name = "order_id")
+    private int orderID;
 
-	public Orders(int orderID, LocalDateTime orderTms, Customers customer, String orderStatus, Stores store,
-			List<OrderItems> oi) {
-		super();
-		this.orderID = orderID;
-		this.orderTms = orderTms;
-		this.customer = customer;
-		this.orderStatus = orderStatus;
-		this.store = store;
-		this.oi = oi;
-	}
+    /**
+     * Timestamp for when the order was placed.
+     */
+    @Column(name = "order_tms")
+    private LocalDateTime orderTms;
 
-	public int getOrderID() {
-		return orderID;
-	}
+    /**
+     * Customer associated with the order.
+     * This establishes a many-to-one relationship with the Customers entity.
+     */
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private Customers customer;
 
-	public void setOrderID(int orderID) {
-		this.orderID = orderID;
-	}
+    /**
+     * Status of the order (e.g., Pending, Completed, Cancelled).
+     */
+    @Column(name = "order_status")
+    private String orderStatus;
 
-	public LocalDateTime getOrderTms() {
-		return orderTms;
-	}
+    /**
+     * Store associated with the order.
+     * This establishes a many-to-one relationship with the Stores entity.
+     */
+    @ManyToOne
+    @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    private Stores store;
 
-	public void setOrderTms(LocalDateTime orderTms) {
-		this.orderTms = orderTms;
-	}
+    /**
+     * List of items in the order.
+     * This establishes a one-to-many relationship with the OrderItems entity.
+     */
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItems> oi;
 
-	public Customers getCustomer() {
-		return customer;
-	}
+    /**
+     * Default constructor.
+     * Used for creating an empty instance of Orders.
+     */
+    public Orders() {
+        // Default constructor
+    }
 
-	public void setCustomer(Customers customer) {
-		this.customer = customer;
-	}
+    /**
+     * Parameterized constructor to initialize all fields of the Orders class.
+     *
+     * @param orderID     Unique identifier for the order.
+     * @param orderTms    Timestamp of the order.
+     * @param customer    Customer associated with the order.
+     * @param orderStatus Status of the order.
+     * @param store       Store associated with the order.
+     * @param oi          List of order items in the order.
+     */
+    public Orders(int orderID, LocalDateTime orderTms, Customers customer, String orderStatus, Stores store,
+                  List<OrderItems> oi) {
+        super();
+        this.orderID = orderID;
+        this.orderTms = orderTms;
+        this.customer = customer;
+        this.orderStatus = orderStatus;
+        this.store = store;
+        this.oi = oi;
+    }
 
-	public String getOrderStatus() {
-		return orderStatus;
-	}
+    // Getter and Setter methods for accessing and modifying the fields.
 
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
-	}
+    public int getOrderID() {
+        return orderID;
+    }
 
-	public Stores getStore() {
-		return store;
-	}
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
 
-	public void setStore(Stores store) {
-		this.store = store;
-	}
+    public LocalDateTime getOrderTms() {
+        return orderTms;
+    }
 
-	public List<OrderItems> getOi() {
-		return oi;
-	}
+    public void setOrderTms(LocalDateTime orderTms) {
+        this.orderTms = orderTms;
+    }
 
-	public void setOi(List<OrderItems> oi) {
-		this.oi = oi;
-	}
-	
+    public Customers getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customers customer) {
+        this.customer = customer;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Stores getStore() {
+        return store;
+    }
+
+    public void setStore(Stores store) {
+        this.store = store;
+    }
+
+    public List<OrderItems> getOi() {
+        return oi;
+    }
+
+    public void setOi(List<OrderItems> oi) {
+        this.oi = oi;
+    }
 }

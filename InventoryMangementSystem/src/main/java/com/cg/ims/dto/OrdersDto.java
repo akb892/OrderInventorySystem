@@ -12,108 +12,135 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Data Transfer Object (DTO) class for Orders.
+ * This class is used to encapsulate the data for transferring between layers
+ * while ensuring validation constraints on the fields.
+ */
 public class OrdersDto {
-	
-	
-	@NotNull(message = "Order id cannot be null")
-	@NotBlank(message = "Order id cannot be blank")
-	private int orderID;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	private LocalDateTime orderTms;
-	
-	
-	private Customers customer;
-	
-	
-	@Size(max = 10, message = "Order status must not exceed 10 characters")
-	private String orderStatus;
-	
-	private Stores store;
-	
-	
-	private List<OrderItems> oi;
-	
-	
-	public OrdersDto() {
-		// TODO Auto-generated constructor stub
-	}
 
+    /**
+     * Unique identifier for the order.
+     * Cannot be null or blank.
+     */
+    @NotNull(message = "Order id cannot be null")
+    @NotBlank(message = "Order id cannot be blank")
+    private int orderID;
 
-	public OrdersDto(
-			@NotNull(message = "Order id cannot be null") @NotBlank(message = "Order id cannot be blank") int orderID,
-			LocalDateTime orderTms, Customers customer,
-			@Size(max = 10, message = "Order status must not exceed 10 characters") String orderStatus, Stores store,
-			List<OrderItems> oi) {
-		super();
-		this.orderID = orderID;
-		this.orderTms = orderTms;
-		this.customer = customer;
-		this.orderStatus = orderStatus;
-		this.store = store;
-		this.oi = oi;
-	}
+    /**
+     * Timestamp of the order.
+     * Formatted as "dd-MM-yyyy HH:mm:ss".
+     */
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime orderTms;
 
+    /**
+     * Customer associated with the order.
+     * Maps to the Customers entity.
+     */
+    private Customers customer;
 
-	public int getOrderID() {
-		return orderID;
-	}
+    /**
+     * Status of the order.
+     * Must not exceed 10 characters in length.
+     */
+    @Size(max = 10, message = "Order status must not exceed 10 characters")
+    private String orderStatus;
 
+    /**
+     * Store associated with the order.
+     * Maps to the Stores entity.
+     */
+    private Stores store;
 
-	public void setOrderID(int orderID) {
-		this.orderID = orderID;
-	}
+    /**
+     * List of order items associated with the order.
+     * Maps to the OrderItems entity.
+     */
+    private List<OrderItems> oi;
 
+    /**
+     * Default constructor.
+     * Used for creating an empty instance of OrdersDto.
+     */
+    public OrdersDto() {
+        // Default constructor
+    }
 
-	public LocalDateTime getOrderTms() {
-		return orderTms;
-	}
+    /**
+     * Parameterized constructor for initializing all fields of the OrdersDto.
+     * 
+     * @param orderID    Unique identifier for the order.
+     * @param orderTms   Timestamp of the order.
+     * @param customer   Customer associated with the order.
+     * @param orderStatus Status of the order.
+     * @param store      Store associated with the order.
+     * @param oi         List of order items associated with the order.
+     */
+    public OrdersDto(
+        @NotNull(message = "Order id cannot be null") 
+        @NotBlank(message = "Order id cannot be blank") int orderID,
+        LocalDateTime orderTms, 
+        Customers customer,
+        @Size(max = 10, message = "Order status must not exceed 10 characters") String orderStatus, 
+        Stores store,
+        List<OrderItems> oi) {
+        super();
+        this.orderID = orderID;
+        this.orderTms = orderTms;
+        this.customer = customer;
+        this.orderStatus = orderStatus;
+        this.store = store;
+        this.oi = oi;
+    }
 
+    // Getter and setter methods for accessing and modifying fields
 
-	public void setOrderTms(LocalDateTime orderTms) {
-		this.orderTms = orderTms;
-	}
+    public int getOrderID() {
+        return orderID;
+    }
 
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
 
-	public Customers getCustomer() {
-		return customer;
-	}
+    public LocalDateTime getOrderTms() {
+        return orderTms;
+    }
 
+    public void setOrderTms(LocalDateTime orderTms) {
+        this.orderTms = orderTms;
+    }
 
-	public void setCustomer(Customers customer) {
-		this.customer = customer;
-	}
+    public Customers getCustomer() {
+        return customer;
+    }
 
+    public void setCustomer(Customers customer) {
+        this.customer = customer;
+    }
 
-	public String getOrderStatus() {
-		return orderStatus;
-	}
+    public String getOrderStatus() {
+        return orderStatus;
+    }
 
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
-	}
+    public Stores getStore() {
+        return store;
+    }
 
+    public void setStore(Stores store) {
+        this.store = store;
+    }
 
-	public Stores getStore() {
-		return store;
-	}
+    public List<OrderItems> getOi() {
+        return oi;
+    }
 
-
-	public void setStore(Stores store) {
-		this.store = store;
-	}
-
-
-	public List<OrderItems> getOi() {
-		return oi;
-	}
-
-
-	public void setOi(List<OrderItems> oi) {
-		this.oi = oi;
-	}
-	
-	
-	
+    public void setOi(List<OrderItems> oi) {
+        this.oi = oi;
+    }
 }
