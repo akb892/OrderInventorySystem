@@ -8,17 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import com.cg.ims.exception.list.BadRequestException;
+import com.cg.ims.exception.list.InternalServerErrorException;
+import com.cg.ims.exception.list.InvalidDataException;
+import com.cg.ims.exception.list.ResourceNotFoundException;
+import com.cg.ims.exception.list.UnauthorizedException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	// Handle Resource Not Found exceptions
-	@ExceptionHandler(CustomerNotFoundException.class)
-	public ResponseEntity<Map<String, String>> handleCustomerNotFoundException(CustomerNotFoundException ex) {
-		Map<String, String> errorDetails = new HashMap<>();
-		errorDetails.put("error", ex.getMessage());
-		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-	}
 
 	// Handle validation exceptions
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,12 +28,43 @@ public class GlobalExceptionHandler {
 				.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
+	
+	
+	// Handle InvalidProductDataException
+		@ExceptionHandler(InvalidDataException.class)
+		public ResponseEntity<?> handleInvalidProductDataException(InvalidDataException ex, WebRequest request) {
+			ErrorMapper errorDetails = new ErrorMapper(HttpStatus.BAD_REQUEST, ex.getMessage(),
+					request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+		}
 
-	// Handle generic exceptions
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
-		Map<String, String> errorDetails = new HashMap<>();
-		errorDetails.put("error", "An unexpected error occurred: " + ex.getMessage());
-		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+		// Handle InternalServerErrorException
+		@ExceptionHandler(value = InternalServerErrorException.class)
+		public ResponseEntity<?> handleException(InternalServerErrorException ex, WebRequest request) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		// Handle NotFoundException
+		@ExceptionHandler(ResourceNotFoundException.class)
+		public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+			ErrorMapper errorDetails = new ErrorMapper(HttpStatus.NOT_FOUND, ex.getMessage(),
+					request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+		}
+
+		// Handle NotFoundException
+		@ExceptionHandler(UnauthorizedException.class)
+		public ResponseEntity<?> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
+			ErrorMapper errorDetails = new ErrorMapper(HttpStatus.NOT_FOUND, ex.getMessage(),
+					request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+		}
+
+		// Handle Exception
+		@ExceptionHandler(BadRequestException.class)
+		public ResponseEntity<?> handleBadRequestException(BadRequestException ex, WebRequest request) {
+			ErrorMapper errorDetails = new ErrorMapper(HttpStatus.BAD_REQUEST, ex.getMessage(),
+					request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+		}
 }
