@@ -152,9 +152,11 @@ public class OrdersApi {
      * @param status the status of the orders.
      * @return a ResponseEntity containing a list of OrdersDto objects.
      * @throws ResourceNotFoundException if no orders are found with the given status.
+     * @throws InvalidDataException 
+     * @throws InternalServerErrorException 
      */
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<OrdersDto>> getOrderByStatus(@PathVariable String status) throws ResourceNotFoundException {
+    public ResponseEntity<List<OrdersDto>> getOrderByStatus(@PathVariable String status) throws  InvalidDataException, InternalServerErrorException {
         List<OrdersDto> od = serv.getOrdersByStatus(status);
         return new ResponseEntity<List<OrdersDto>>(od, HttpStatus.OK);
     }

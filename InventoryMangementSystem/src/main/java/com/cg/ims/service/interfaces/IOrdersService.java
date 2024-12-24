@@ -106,7 +106,7 @@ public interface IOrdersService {
      * @return a list of orders with the specified status.
      * @throws ResourceNotFoundException if no orders are found with the specified status.
      */
-    List<OrdersDto> getOrdersByStatus(String status) throws ResourceNotFoundException;
+    List<OrdersDto> getOrdersByStatus(String status) throws InternalServerErrorException, InvalidDataException;
 
     /**
      * Retrieves orders placed within a specific date range.

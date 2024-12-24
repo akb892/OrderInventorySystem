@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "customers")
@@ -20,6 +21,7 @@ public class Customers {
 	@Column(name = "email_address")
 	private String emailAddress;
 
+	
 	@Column(name = "full_name")
 	private String fullName;
 
@@ -27,6 +29,9 @@ public class Customers {
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Orders> order;
 	
+	
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private List<Shipments> shipments;
 
 
 	public Customers() {
@@ -44,6 +49,26 @@ public class Customers {
 		this.emailAddress = emailAddress;
 		this.fullName = fullName;
 		this.order = order;
+	}
+
+
+
+
+
+
+
+	public List<Shipments> getShipments() {
+		return shipments;
+	}
+
+
+
+
+
+
+
+	public void setShipments(List<Shipments> shipments) {
+		this.shipments = shipments;
 	}
 
 

@@ -32,6 +32,7 @@ public class OrdersDto {
      * Formatted as "dd-MM-yyyy HH:mm:ss".
      */
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @NotNull(message = "Order timestamp is required")
     private LocalDateTime orderTms;
 
     /**
@@ -44,6 +45,7 @@ public class OrdersDto {
      * Status of the order.
      * Must not exceed 10 characters in length.
      */
+    @NotBlank(message = "Order status is required")
     @Size(max = 10, message = "Order status must not exceed 10 characters")
     private String orderStatus;
 

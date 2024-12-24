@@ -2,19 +2,20 @@ package com.cg.ims.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.cg.ims.dao.ICustomerRepo;
+
+import com.cg.ims.dao.ICustomerRepository;
 import com.cg.ims.dao.IOrderRepo;
 import com.cg.ims.dao.IStoreRepo;
-import com.cg.ims.dto.CustomersDto;
+import com.cg.ims.dto.CustomerDto;
 import com.cg.ims.dto.OrdersDto;
 import com.cg.ims.entity.Customers;
 import com.cg.ims.entity.Orders;
@@ -35,7 +36,7 @@ public class OrderService implements IOrdersService {
     @Autowired
     private IOrderRepo repo;
     @Autowired
-    private ICustomerRepo repo1;
+    private ICustomerRepository repo1;
     @Autowired
     private IStoreRepo repo2;
 
@@ -129,17 +130,20 @@ public class OrderService implements IOrdersService {
      */
     @Override
     public Map<String, Integer> countOfOrders() throws InternalServerErrorException {
-        List<Object[]> results = repo.countOrdersByStatus();
-        if (results.isEmpty()) {
-            throw new InternalServerErrorException("An internal server error occurred while fetching the count of orders by status.");
+    	try {
+            // Fetch data from the database
+            List<Object[]> result = repo.countOrdersGroupedByStatus();
+
+            // Convert the result into a map
+            return result.stream()
+                         .collect(Collectors.toMap(
+                             row -> (String) row[0], // Order status
+                             row -> ((Number) row[1]).intValue() // Count
+                         ));
+        } catch (Exception e) {
+            // Handle unexpected errors
+            throw new InternalServerErrorException("An error occurred while fetching order counts.");
         }
-        Map<String, Integer> m = new HashMap<>();
-        for (Object[] result : results) {
-            String status = (String) result[0];
-            Integer count = (Integer) result[1];
-            m.put(status, count);
-        }
-        return m;
     }
 
     /**
@@ -154,7 +158,7 @@ public class OrderService implements IOrdersService {
         List<OrdersDto> od = new ArrayList<>();
         List<Stores> s = repo2.findByStoreName(storeName);
         for (Stores s1 : s) {
-            List<Orders> li = new ArrayList<>(s1.getOi());
+            List<Orders> li = new ArrayList<>(s1.getOrders());
             if (li.isEmpty()) {
                 throw new ResourceNotFoundException("Orders with the specified store name not found.");
             }
@@ -206,7 +210,7 @@ public class OrderService implements IOrdersService {
      */
     @Override
     public List<OrdersDto> getOrdersBySpecificCustomer(int customerId) throws ResourceNotFoundException {
-        CustomersDto co = new CustomersDto();
+        CustomerDto co = new CustomerDto();
         co.setCustomerId(customerId);
         if (co.getCustomerId() > 0) {
             Optional<Customers> op = repo1.findById(customerId);
@@ -286,30 +290,34 @@ public class OrderService implements IOrdersService {
      * @param status the status of the orders to be retrieved.
      * @return a list of orders matching the specified status.
      * @throws ResourceNotFoundException if no orders are found for the specified status.
+     * @throws InvalidDataException 
      */
     @Override
-    public List<OrdersDto> getOrdersByStatus(String status) throws ResourceNotFoundException {
-        List<OrdersDto> li = new ArrayList<>();
-        OrdersDto od = new OrdersDto();
-        od.setOrderStatus(status);
-        if (od.getOrderStatus() != null) {
-            List<Orders> o = repo.findByOrderStatus(status);
-            if (o.isEmpty()) {
-                throw new ResourceNotFoundException("Orders with the specified status not found.");
-            }
-            for (Orders or : o) {
-                od.setCustomer(or.getCustomer());
-                od.setOi(or.getOi());
-                od.setOrderID(or.getOrderID());
-                od.setOrderStatus(or.getOrderStatus());
-                od.setOrderTms(or.getOrderTms());
-                od.setStore(or.getStore());
-                li.add(od);
-            }
-            return li;
+    public List<OrdersDto> getOrdersByStatus(String status) throws InternalServerErrorException, InvalidDataException {
+    	if (status == null || status.trim().isEmpty()) {
+            throw new InvalidDataException("Status cannot be null or empty.");
         }
-        return null;
+
+        // Fetch orders from the database
+        List<Orders> orders = repo.findByOrderStatus(status);
+
+        // Handle no orders found
+        if (orders.isEmpty()) {
+            throw new InternalServerErrorException("An internal server error occurred while fetching the count of orders by status.");
+        }
+
+        // Convert entities to DTOs
+        return orders.stream()
+                     .map(order -> new OrdersDto(
+                         order.getOrderID(),
+                         order.getOrderTms(),
+                         order.getCustomer(),
+                         order.getOrderStatus(),
+                         order.getStore(),
+                         order.getOi()))
+                     .collect(Collectors.toList());
     }
+    
 
     /**
      * Retrieves orders within a specific date range.
@@ -379,4 +387,6 @@ public class OrderService implements IOrdersService {
         }
         return od;
     }
+    
+    
 }

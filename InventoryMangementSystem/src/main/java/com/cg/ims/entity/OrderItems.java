@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
  * order and product.
  */
 @Entity
-@IdClass(CompositeKeyClass.class) // Specifies that this entity uses a composite key.
+//@IdClass(CompositeKeyClass.class) // Specifies that this entity uses a composite key.
 @Table(name = "order_items") // Maps this entity to the "order_items" table in the database.
 public class OrderItems {
 
@@ -32,6 +32,7 @@ public class OrderItems {
     /**
      * Unique identifier for the line item within an order.
      */
+    
     @Column(name = "line_item_id")
     private int lineItemId;
 
@@ -39,7 +40,7 @@ public class OrderItems {
      * Represents the product associated with the order item.
      * Part of the composite key.
      */
-    @Id
+    //@Id
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Products product;
