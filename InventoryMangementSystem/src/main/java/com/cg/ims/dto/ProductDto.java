@@ -240,4 +240,8 @@ public class ProductDto {
         this.orderItems = orderItems;
         this.inventory = inventory;
     }
+    
+    public ProductDto() {
+		// TODO Auto-generated constructor stub
+	}
 }

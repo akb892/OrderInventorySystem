@@ -2,6 +2,7 @@ package com.cg.ims.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
  
 public class ShipmentsDto {
@@ -19,14 +20,37 @@ public class ShipmentsDto {
     @Size(max = 100, message = "Shipment status must not exceed 100 characters")
     private String shipmentStatus;
  
+//	public Long getStoreId() {
+//		return storeId;
+//	}
+ 
+//	public void setStoreId(Long storeId) {
+//		this.storeId = storeId;
+//	}
+    
+    @NotNull(message = "Shipment ID is required")
+	@Positive(message = "Shipment ID must be a positive number")
+    private int shipmentId;
+    
+    
+    
+ 
 	public Long getStoreId() {
 		return storeId;
 	}
- 
+
 	public void setStoreId(Long storeId) {
 		this.storeId = storeId;
 	}
- 
+
+	public int getShipmentId() {
+		return shipmentId;
+	}
+
+	public void setShipmentId(int shipmentId) {
+		this.shipmentId = shipmentId;
+	}
+
 	public Long getCustomerId() {
 		return customerId;
 	}
