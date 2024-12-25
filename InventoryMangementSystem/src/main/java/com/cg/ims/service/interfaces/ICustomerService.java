@@ -15,24 +15,27 @@ import com.cg.ims.dto.ShipmentsDto;
 import com.cg.ims.entity.Customers;
 import com.cg.ims.entity.Orders;
 import com.cg.ims.entity.Shipments;
+import com.cg.ims.exception.list.BadRequestException;
+import com.cg.ims.exception.list.InternalServerErrorException;
+import com.cg.ims.exception.list.InvalidDataException;
+import com.cg.ims.exception.list.ResourceNotFoundException;
  
 public interface ICustomerService {
-	public CustomerDto createCustomer(CustomerDto customerDTO);
-	public CustomerDto getCustomerById(Integer id);
-    public List<CustomerDto> getAllCustomers();
-    public void deleteCustomer(Integer id);
-    public CustomerDto updateCustomer(CustomerDto customerDto);
-    public List<CustomerDto> getCustomerByEmail(String email);
-    public List<CustomerDto> getCustomerByName(String name);
-
-
+	public CustomerDto createCustomer(CustomerDto customerDTO) throws BadRequestException, InternalServerErrorException;
+	public CustomerDto getCustomerById(Integer id) throws ResourceNotFoundException;
+    public List<CustomerDto> getAllCustomers() throws InternalServerErrorException;
+    public void deleteCustomer(Integer id) throws ResourceNotFoundException, InternalServerErrorException;
+    public CustomerDto updateCustomer(CustomerDto customerDto) throws ResourceNotFoundException, InvalidDataException, InternalServerErrorException;
+    public List<CustomerDto> getCustomerByEmail(String email) throws ResourceNotFoundException;
+    public List<CustomerDto> getCustomerByName(String name) throws ResourceNotFoundException;
  
-   public List<ShipmentStatusCountCustomer> getCustomerCountByStatus();
-   public CustomerOrders getCustomerOrders(int customerId);
-   public CustomerShipment getCustomerShipments(int customerId); //throws ResourceNotFoundException;
-   List<CustomerDto> getCustomersWithPendingShipments();
-   List<CustomerDto> getCustomersWithCompletedOrders();
-   List<CustomerDto> getCustomersWithOverdueShipments();
-   List<CustomerDto> getCustomersByOrderQuantityRange(int min, int max);
+ 
+ 
+   public List<ShipmentStatusCountCustomer> getCustomerCountByStatus() throws InternalServerErrorException;
+   public CustomerOrders getCustomerOrders(int customerId) throws ResourceNotFoundException;
+   public CustomerShipment getCustomerShipments(int customerId) throws ResourceNotFoundException; //throws ResourceNotFoundException;
+   List<CustomerDto> getCustomersWithPendingShipments() throws InternalServerErrorException;
+   List<CustomerDto> getCustomersWithCompletedOrders() throws InternalServerErrorException;
+   List<CustomerDto> getCustomersWithOverdueShipments() throws InternalServerErrorException;
+   List<CustomerDto> getCustomersByOrderQuantityRange(int min, int max) throws BadRequestException, InternalServerErrorException;
 }
-

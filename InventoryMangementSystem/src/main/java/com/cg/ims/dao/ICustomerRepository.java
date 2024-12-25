@@ -21,11 +21,11 @@ public interface ICustomerRepository extends JpaRepository<Customers, Integer> {
     @Query("SELECT c FROM Customers c WHERE c.fullName LIKE %:name%")
     List<Customers> findByNameContaining(@Param("name") String name);
     //Shipment status wise count of customers
-    @Query("SELECT s.shipmentStatus, COUNT(c.customerId) " +
-    	       "FROM Shipments s " +
-    	       "JOIN s.customer c " +  
-    	       "GROUP BY s.shipmentStatus")
-    	public List<ShipmentStatusCountCustomer> getCustomerCountByStatus();
+    @Query("SELECT new com.cg.ims.dto.ShipmentStatusCountCustomer(s.shipmentStatus, COUNT(DISTINCT c.customerId)) " +
+            "FROM Shipments s " +
+            "JOIN s.customer c " +
+            "GROUP BY s.shipmentStatus")
+     List<ShipmentStatusCountCustomer> getCustomerCountByStatus();
     @Query("SELECT o FROM Orders o WHERE o.customer.customerId = :customerId")
     List<Orders> getCustomerOrders(@Param("customerId") int customerId);
     @Query("SELECT s FROM Shipments s WHERE s.customer.customerId = :Id")

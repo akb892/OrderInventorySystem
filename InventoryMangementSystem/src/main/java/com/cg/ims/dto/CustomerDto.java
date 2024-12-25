@@ -7,8 +7,7 @@ import jakarta.validation.constraints.Size;
 
 public class CustomerDto {
 	
-	@NotNull(message = "Customer id cannot be null")
-	@NotBlank(message = "Customer id cannot be blank")
+	
 	private int customerId;
 	@Email(message = "Invalid Email")
 	@Size(max = 255, message = "Email address must not exceed 255 characters")

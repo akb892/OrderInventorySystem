@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+ 
 import com.cg.ims.dao.ICustomerRepository;
 import com.cg.ims.dao.IOrderRepo;
 import com.cg.ims.dao.IShipmentsRepo;
@@ -18,7 +18,10 @@ import com.cg.ims.dto.ShipmentStatusCountCustomer;
 import com.cg.ims.entity.Customers;
 import com.cg.ims.entity.Orders;
 import com.cg.ims.entity.Shipments;
-
+import com.cg.ims.exception.list.BadRequestException;
+import com.cg.ims.exception.list.InternalServerErrorException;
+import com.cg.ims.exception.list.InvalidDataException;
+import com.cg.ims.exception.list.ResourceNotFoundException;
 import com.cg.ims.service.interfaces.ICustomerService;
  
 @Service
@@ -34,114 +37,160 @@ public class CustomerService implements ICustomerService {
     private IShipmentsRepo shipmentRepository;
  
     @Override
-    public CustomerDto createCustomer(CustomerDto customerDto) {
+    public CustomerDto createCustomer(CustomerDto customerDto) throws BadRequestException, InternalServerErrorException {
+        if (customerDto == null || customerDto.getFullName() == null || customerDto.getEmailAddress() == null) {
+            throw new BadRequestException("Invalid data provided for customer creation.");
+        }
         Customers customer = CustomerMapper.toEntity(customerDto);
         Customers savedCustomer = customerRepository.save(customer);
+        
+        if (savedCustomer == null) {
+            throw new InternalServerErrorException("An error occurred while creating customer.");
+        }
         return CustomerMapper.toDTO(savedCustomer);
     }
  
     @Override
-    public CustomerDto getCustomerById(Integer id) {
-        Customers customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + id));
-        return CustomerMapper.toDTO(customer);
+    public CustomerDto getCustomerById(Integer id) throws ResourceNotFoundException {
+        return customerRepository.findById(id)
+                .map(CustomerMapper::toDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
     }
  
     @Override
-    public List<CustomerDto> getAllCustomers() {
+    public List<CustomerDto> getAllCustomers() throws InternalServerErrorException {
         List<Customers> customers = customerRepository.findAll();
+        if (customers.isEmpty()) {
+            throw new InternalServerErrorException("An error occurred while fetching all customers.");
+        }
         return customers.stream()
                 .map(CustomerMapper::toDTO)
                 .collect(Collectors.toList());
     }
  
     @Override
-    public void deleteCustomer(Integer id) {
+    public void deleteCustomer(Integer id) throws ResourceNotFoundException, InternalServerErrorException {
         if (!customerRepository.existsById(id)) {
-            throw new RuntimeException("Customer not found with ID: " + id);
+            throw new ResourceNotFoundException("Customer not found with ID: " + id);
         }
         customerRepository.deleteById(id);
     }
  
     @Override
-    public CustomerDto updateCustomer(CustomerDto customerDto) {
+    public CustomerDto updateCustomer(CustomerDto customerDto) throws ResourceNotFoundException, InvalidDataException, InternalServerErrorException {
+        if (customerDto == null ) {
+            throw new InvalidDataException("Invalid data provided for customer update.");
+        }
         Customers existingCustomer = customerRepository.findById(customerDto.getCustomerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + customerDto.getCustomerId()));
- 
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerDto.getCustomerId()));
+        if (customerDto.getFullName() == null || customerDto.getEmailAddress() == null) {
+            throw new InvalidDataException("Full name or email address cannot be null.");
+        }
         existingCustomer.setFullName(customerDto.getFullName());
         existingCustomer.setEmailAddress(customerDto.getEmailAddress());
         Customers updatedCustomer = customerRepository.save(existingCustomer);
+        if (updatedCustomer == null) {
+            throw new InternalServerErrorException("An error occurred while updating the customer.");
+        }
  
         return CustomerMapper.toDTO(updatedCustomer);
     }
  
-    @Override
-    public List<CustomerDto> getCustomerByEmail(String email) {
-        List<Customers> li = customerRepository.findByEmailAddress(email);
-        List<CustomerDto> customerDtos = li.stream()
-                .map(customer -> new CustomerDto(
-                        customer.getCustomerId(),
-                        customer.getEmailAddress(),
-                        customer.getFullName()
-                ))
-                .collect(Collectors.toList());
-        
-        return customerDtos;
-              
-    }
  
     @Override
-    public List<CustomerDto> getCustomerByName(String name) {
-        List<Customers> customers = customerRepository.findByNameContaining(name);
+    public List<CustomerDto> getCustomerByEmail(String email) throws ResourceNotFoundException {
+        List<Customers> customers = customerRepository.findByEmailAddress(email);
         if (customers.isEmpty()) {
-            throw new RuntimeException("No customers found with name: " + name);
+            throw new ResourceNotFoundException("No customers found with email: " + email);
         }
         return customers.stream().map(CustomerMapper::toDTO).collect(Collectors.toList());
     }
  
     @Override
-    public List<ShipmentStatusCountCustomer> getCustomerCountByStatus() {
-        return customerRepository.getCustomerCountByStatus();
+    public List<CustomerDto> getCustomerByName(String name) throws ResourceNotFoundException {
+        List<Customers> customers = customerRepository.findByNameContaining(name);
+        if (customers.isEmpty()) {
+            throw new ResourceNotFoundException("No customers found with name: " + name);
+        }
+        return customers.stream().map(CustomerMapper::toDTO).collect(Collectors.toList());
+    }
+    
+    
+    @Override
+    public List<ShipmentStatusCountCustomer> getCustomerCountByStatus() throws InternalServerErrorException {
+        List<ShipmentStatusCountCustomer> li= customerRepository.getCustomerCountByStatus();
+         if (li.isEmpty()) {
+        	 throw new InternalServerErrorException("An error occurred while fetching customer count by shipment status.");
+         }
+         return li;
     }
  
     @Override
-    public CustomerOrders getCustomerOrders(int customerId) {
+    public CustomerOrders getCustomerOrders(int customerId) throws ResourceNotFoundException {
         Customers customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+ 
         List<Orders> orders = orderRepository.findOrdersByCustomerId(customerId);
+        if (orders.isEmpty()) {
+            throw new ResourceNotFoundException("No orders found for customer ID: " + customerId);
+        }
         return new CustomerOrders(customer, orders);
     }
  
     @Override
-    public CustomerShipment getCustomerShipments(int customerId) {
+    public CustomerShipment getCustomerShipments(int customerId) throws ResourceNotFoundException {
         Customers customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+ 
         List<Shipments> shipments = shipmentRepository.findShipmentsByCustomerId(customerId);
+        if (shipments.isEmpty()) {
+            throw new ResourceNotFoundException("No shipments found for customer ID: " + customerId);
+        }
         return new CustomerShipment(customer, shipments);
     }
  
     @Override
-    public List<CustomerDto> getCustomersWithPendingShipments() {
-        return customerRepository.findCustomersWithPendingShipments()
+    public List<CustomerDto> getCustomersWithPendingShipments() throws InternalServerErrorException {
+        List<CustomerDto> li= customerRepository.findCustomersWithPendingShipments()
                 .stream().map(CustomerMapper::toDTO).collect(Collectors.toList());
+        if (li.isEmpty()) {
+        	throw new InternalServerErrorException("An error occurred while fetching customers with pending shipments.");
+        }
+        return li;
     }
  
     @Override
-    public List<CustomerDto> getCustomersWithCompletedOrders() {
-        return customerRepository.findCustomersWithCompletedOrders()
+    public List<CustomerDto> getCustomersWithCompletedOrders() throws InternalServerErrorException {
+       List<CustomerDto> li= customerRepository.findCustomersWithCompletedOrders()
                 .stream().map(CustomerMapper::toDTO).collect(Collectors.toList());
+       if (li.isEmpty()) {
+    	   throw new InternalServerErrorException("An error occurred while fetching customers with completed orders.");
+       }
+    return li;
     }
  
     @Override
-    public List<CustomerDto> getCustomersWithOverdueShipments() {
-        return customerRepository.findCustomersWithOverdueShipments()
+    public List<CustomerDto> getCustomersWithOverdueShipments() throws InternalServerErrorException {
+        List<CustomerDto> li= customerRepository.findCustomersWithOverdueShipments()
                 .stream().map(CustomerMapper::toDTO).collect(Collectors.toList());
+        if (li.isEmpty()) {
+        	throw new InternalServerErrorException("An error occurred while fetching customers with overdue shipments.");
+        }
+        return li;
     }
  
     @Override
-    public List<CustomerDto> getCustomersByOrderQuantityRange(int min, int max) {
-        return customerRepository.findCustomersByOrderQuantityRange(min, max)
+    public List<CustomerDto> getCustomersByOrderQuantityRange(int min, int max) throws BadRequestException, InternalServerErrorException {
+    	if (min < 0 || max < 0 || min > max) {
+            throw new BadRequestException("Invalid order quantity range.");
+        }
+        List<CustomerDto> li= customerRepository.findCustomersByOrderQuantityRange(min, max)
                 .stream().map(CustomerMapper::toDTO).collect(Collectors.toList());
+        if (li.isEmpty()) {
+        	throw new InternalServerErrorException("An error occurred while fetching customers by order quantity range.");
+        }
+        
+        return li;
     }
  
 	

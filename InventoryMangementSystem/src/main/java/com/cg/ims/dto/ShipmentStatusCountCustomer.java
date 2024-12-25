@@ -5,10 +5,10 @@ public class ShipmentStatusCountCustomer {
 	private int count;
 	
 	
-	public ShipmentStatusCountCustomer(String shipmentStatus, int count) {
+	public ShipmentStatusCountCustomer(String shipmentStatus, long count) {
 		super();
 		this.shipmentStatus = shipmentStatus;
-		this.count = count;
+		this.count = (int) count;
 	}
 	public ShipmentStatusCountCustomer() {
 		
@@ -28,4 +28,3 @@ public class ShipmentStatusCountCustomer {
 	
  
 }
- 
