@@ -2,9 +2,12 @@ package com.cg.ims.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -64,14 +67,16 @@ public class Products {
      * List of order items associated with the product.
      * Establishes a one-to-many relationship with the `OrderItems` entity.
      */
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<OrderItems> orderItems;
 
     /**
      * List of inventory entries associated with the product.
      * Establishes a one-to-many relationship with the `Inventory` entity.
      */
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Inventory> inventories;
 
     // Getters and setters for accessing and modifying the fields.

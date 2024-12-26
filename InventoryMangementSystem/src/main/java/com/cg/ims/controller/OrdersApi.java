@@ -69,7 +69,7 @@ public class OrdersApi {
      * @return a ResponseEntity with a success message.
      * @throws ResourceNotFoundException if the order with the given ID is not found.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable int id) throws ResourceNotFoundException {
         serv.deleteOrder(id);
         return new ResponseEntity<String>("Record deleted successfully", HttpStatus.OK);
@@ -92,7 +92,7 @@ public class OrdersApi {
      * @return a ResponseEntity containing a list of OrdersDto objects.
      * @throws ResourceNotFoundException if no orders are found for the given store.
      */
-    @GetMapping("/{store}")
+    @GetMapping("/store/{store}")
     public ResponseEntity<List<OrdersDto>> getOrdersByStoreName(@PathVariable String store) throws ResourceNotFoundException {
         List<OrdersDto> li = serv.getOrdersByStoreName(store);
         return new ResponseEntity<List<OrdersDto>>(li, HttpStatus.OK);
@@ -116,7 +116,7 @@ public class OrdersApi {
      * @return a ResponseEntity containing a list of OrdersDto objects.
      * @throws ResourceNotFoundException if no orders are found for the given customer.
      */
-    @GetMapping("/customer/{customerid}")
+    @GetMapping("/customers/{customerid}")
     public ResponseEntity<List<OrdersDto>> getOrdersByCustomerId(@PathVariable int customerid) throws ResourceNotFoundException {
         List<OrdersDto> li = serv.getOrdersBySpecificCustomer(customerid);
         return new ResponseEntity<List<OrdersDto>>(li, HttpStatus.OK);
@@ -128,7 +128,7 @@ public class OrdersApi {
      * @return a ResponseEntity with a success message.
      * @throws ResourceNotFoundException if the order with the given ID is not found.
      */
-    @GetMapping("/{id}/orders")
+    @GetMapping("/cancel/{id}/orders")
     public ResponseEntity<String> markOrdersAsCancelled(@PathVariable int id) throws ResourceNotFoundException {
         serv.markOrderAsCancelled(id);
         return new ResponseEntity<String>("Successfully marked canceled", HttpStatus.OK);
@@ -141,8 +141,8 @@ public class OrdersApi {
      * @throws ResourceNotFoundException if the order with the given ID is not found.
      */
     @GetMapping("/singleorder/{orderid}")
-    public ResponseEntity<OrdersDto> getSingleOrder(@PathVariable int id) throws ResourceNotFoundException {
-        OrdersDto od = serv.getSingleOrderById(id);
+    public ResponseEntity<OrdersDto> getSingleOrder(@PathVariable int orderid) throws ResourceNotFoundException {
+        OrdersDto od = serv.getSingleOrderById(orderid);
         return new ResponseEntity<OrdersDto>(od, HttpStatus.OK);
     }
 

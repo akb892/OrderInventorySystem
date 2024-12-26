@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,11 +32,11 @@ public class Customers {
     private String fullName;
 
     // A customer can have multiple orders, linked by the "customer" field in Orders class
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL) // Cascade all operations (persist, remove, etc.)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cascade all operations (persist, remove, etc.)
     private List<Orders> order;
 
     // A customer can have multiple shipments, linked by the "customer" field in Shipments class
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL) // Cascade all operations (persist, remove, etc.)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cascade all operations (persist, remove, etc.)
     private List<Shipments> shipments;
 
     // Default constructor

@@ -2,9 +2,12 @@ package com.cg.ims.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -22,19 +25,22 @@ public class Shipments {
 
     // Many-to-one relationship with the "Stores" entity
     // This means each shipment is associated with one store
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false) // Maps to "store_id" column in the shipments table
+    @JsonIgnore
     private Stores store;
 
     // Many-to-one relationship with the "Customers" entity
     // This means each shipment is associated with one customer
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false) // Maps to "customer_id" column in the shipments table
+    @JsonIgnore
     private Customers customer;
 
     // One-to-many relationship with the "OrderItems" entity
     // This means each shipment can contain multiple order items
-    @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL, orphanRemoval = true) 
+    @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) 
+    @JsonIgnore
     // Cascade operations (persist, remove, etc.) and orphan removal
     private List<OrderItems> orderItems;
 

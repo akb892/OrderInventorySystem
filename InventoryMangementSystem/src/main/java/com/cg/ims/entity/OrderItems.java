@@ -2,6 +2,8 @@ package com.cg.ims.entity;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -27,6 +29,7 @@ public class OrderItems {
     @Id
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    @JsonIgnore
     private Orders order;
 
     /**
@@ -43,6 +46,7 @@ public class OrderItems {
     //@Id
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    @JsonIgnore
     private Products product;
 
     /**
@@ -63,6 +67,7 @@ public class OrderItems {
      */
     @ManyToOne
     @JoinColumn(name = "shipment_id", referencedColumnName = "shipment_id")
+    @JsonIgnore
     private Shipments shipment;
 
     /**

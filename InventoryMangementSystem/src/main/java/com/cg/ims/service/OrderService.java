@@ -54,6 +54,7 @@ public class OrderService implements IOrdersService {
         } else {
             return li;
         }
+        
     }
 
     /**
@@ -192,7 +193,6 @@ public class OrderService implements IOrdersService {
         OrdersDto od = new OrdersDto();
         for (Orders o1 : o) {
             od.setCustomer(o1.getCustomer());
-            od.setOi(o1.getOi());
             od.setOrderID(o1.getOrderID());
             od.setOrderStatus(o1.getOrderStatus());
             od.setOrderTms(o1.getOrderTms());
@@ -268,20 +268,32 @@ public class OrderService implements IOrdersService {
      */
     @Override
     public OrdersDto getSingleOrderById(int orderId) throws ResourceNotFoundException {
-        Optional<Orders> op = repo.findById(orderId);
-        if (op.isPresent()) {
-            Orders o = op.get();
-            OrdersDto od = new OrdersDto();
-            od.setCustomer(o.getCustomer());
-            od.setOi(o.getOi());
-            od.setOrderID(o.getOrderID());
-            od.setOrderStatus(o.getOrderStatus());
-            od.setOrderTms(o.getOrderTms());
-            od.setStore(o.getStore());
-            return od;
-        } else {
-            throw new ResourceNotFoundException("Order with the specified order ID not found.");
-        }
+//        Optional<Orders> op = repo.findById(orderId);
+//        if (op.isPresent()) {
+//            Orders o = op.get();
+//            OrdersDto od = new OrdersDto();
+//            od.setCustomer(o.getCustomer());
+//            od.setOrderID(o.getOrderID());
+//            od.setOrderStatus(o.getOrderStatus());
+//            od.setOrderTms(o.getOrderTms());
+//            od.setStore(o.getStore());
+//            return od;
+//        } else {
+//            throw new ResourceNotFoundException("Order with the specified order ID not found.");
+//        }
+    	
+          Orders o = repo.findSingleOrderById(orderId);
+          if(o != null) {
+          OrdersDto od = new OrdersDto();
+          od.setCustomer(o.getCustomer());
+          od.setOrderID(o.getOrderID());
+          od.setOrderStatus(o.getOrderStatus());
+          od.setOrderTms(o.getOrderTms());
+          od.setStore(o.getStore());
+          return od;
+      } else {
+          throw new ResourceNotFoundException("Order with the specified order ID not found.");
+      }
     }
 
     /**

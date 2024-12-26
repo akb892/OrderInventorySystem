@@ -30,6 +30,7 @@ public interface IOrderRepo extends JpaRepository<Orders, Integer> {
 	@Query("SELECT o FROM Orders o WHERE o.customer.id = :customerId")
     List<Orders> findOrdersByCustomerId(Integer customerId);
 	
-	
+	@Query("Select o from Orders o where o.orderID = :id")
+	Orders findSingleOrderById(int id);
 	
 }

@@ -3,9 +3,12 @@ package com.cg.ims.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -37,8 +40,9 @@ public class Orders {
      * Customer associated with the order.
      * This establishes a many-to-one relationship with the Customers entity.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    @JsonIgnore
     private Customers customer;
 
     /**
@@ -51,15 +55,17 @@ public class Orders {
      * Store associated with the order.
      * This establishes a many-to-one relationship with the Stores entity.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")
+    @JsonIgnore
     private Stores store;
 
     /**
      * List of items in the order.
      * This establishes a one-to-many relationship with the OrderItems entity.
      */
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<OrderItems> oi;
 
     /**
