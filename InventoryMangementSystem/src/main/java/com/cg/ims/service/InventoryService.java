@@ -101,8 +101,9 @@ public class InventoryService implements IInventoryService {
         }
 
         List<Object[]> results = null;
+        results = inventoryRepository.fetchOrderDetailsByOrderId(orderId);
         if (!results.isEmpty()) {
-            results = inventoryRepository.fetchOrderDetailsByOrderId(orderId);
+           
             // Process the results into a list of maps
             return results.stream().map(record -> {
                 Map<String, Object> map = new HashMap<>();
@@ -120,9 +121,10 @@ public class InventoryService implements IInventoryService {
     @Override
     public List<Map<String, Object>> getProductsCountByShipmentStatus() throws InternalServerErrorException {
         List<Object[]> results = null;
+        results = inventoryRepository.countProductsSoldByShipmentStatus();
 
         if (!results.isEmpty()) {
-            results = inventoryRepository.countProductsSoldByShipmentStatus();
+           
             // Process the results into a list of maps
             return results.stream().map(record -> {
                 Map<String, Object> map = new HashMap<>();
@@ -147,8 +149,9 @@ public class InventoryService implements IInventoryService {
         }
 
         List<Object[]> results = null;
+        results = inventoryRepository.fetchProductDetailsByOrderId(orderId);
         if (!results.isEmpty()) {
-            results = inventoryRepository.fetchProductDetailsByOrderId(orderId);
+            
             // Process the results into a list of maps
             return results.stream().map(record -> {
                 Map<String, Object> map = new HashMap<>();
