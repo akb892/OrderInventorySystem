@@ -7,8 +7,18 @@ import org.springframework.stereotype.Repository;
 
 import com.cg.ims.entity.Stores;
 
+/**
+ * Repository interface for performing CRUD operations and custom queries
+ * on the Stores entity.
+ */
 @Repository
-public interface IStoreRepo extends JpaRepository<Stores, Integer>{
+public interface IStoreRepo extends JpaRepository<Stores, Integer> {
 
-	List<Stores> findByStoreName(String storeName);
+    /**
+     * Finds a list of stores by their name.
+     * 
+     * @param storeName The name of the store(s) to search for.
+     * @return A list of Stores that match the given store name.
+     */
+    List<Stores> findByStoreName(String storeName);
 }
