@@ -46,7 +46,7 @@ public class OrdersApi {
 	}
 	
 	// using post mapping a method to create orders
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<String> createNewOrders(@RequestBody @Valid OrdersDto od) throws BadRequestException {
 		// calling the method from service class for implementation
 		serv.createNewOrders(od);
@@ -55,7 +55,7 @@ public class OrdersApi {
 	}
 	
 	// using put mapping in a method to update orders
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<String> updateOrder(@RequestBody @Valid OrdersDto od) throws BadRequestException {
 		// calling the method from service class for implementation
 		serv.updateOrdersByObject(od);
@@ -105,7 +105,7 @@ public class OrdersApi {
      * @return a ResponseEntity containing the OrdersDto object.
      * @throws ResourceNotFoundException if the order with the given ID is not found.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/allorders/{id}")
     public ResponseEntity<OrdersDto> getOrdersById(@PathVariable int id) throws ResourceNotFoundException {
         OrdersDto od = serv.getOrdersDetailsById(id);
         return new ResponseEntity<OrdersDto>(od, HttpStatus.OK);
@@ -141,7 +141,7 @@ public class OrdersApi {
      * @return a ResponseEntity containing the OrdersDto object.
      * @throws ResourceNotFoundException if the order with the given ID is not found.
      */
-    @GetMapping("/{orderid}")
+    @GetMapping("/singleorder/{orderid}")
     public ResponseEntity<OrdersDto> getSingleOrder(@PathVariable int id) throws ResourceNotFoundException {
         OrdersDto od = serv.getSingleOrderById(id);
         return new ResponseEntity<OrdersDto>(od, HttpStatus.OK);

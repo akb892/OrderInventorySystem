@@ -2,13 +2,13 @@ package com.cg.ims.controller;
 
 
 import java.util.List;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+ 
 import com.cg.ims.dto.CustomerDto;
 import com.cg.ims.dto.CustomerOrders;
 import com.cg.ims.dto.CustomerShipment;
@@ -19,27 +19,18 @@ import com.cg.ims.exception.list.UnauthorizedException;
 import com.cg.ims.exception.list.InvalidDataException;
 import com.cg.ims.exception.list.BadRequestException;
 import com.cg.ims.service.interfaces.ICustomerService;
-
+ 
 import jakarta.validation.Valid;
-
-/**
- * REST controller for managing customer-related operations.
- * Provides endpoints for CRUD operations and various customer-related queries.
- */
+ 
 @RestController
 @RequestMapping("/api/v1/customers")
 @Validated
 public class CustomerController {
-
+ 
     @Autowired
     private ICustomerService customerService;
-
-    /**
-     * Fetches all customers.
-     * @return List of all customers.
-     * @throws ResourceNotFoundException If no customers are found.
-     * @throws InternalServerErrorException If an error occurs during the operation.
-     */
+ 
+    // Fetch all customers
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers() throws ResourceNotFoundException, InternalServerErrorException {
         List<CustomerDto> customers = customerService.getAllCustomers();
@@ -48,13 +39,8 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customers);
     }
-
-    /**
-     * Fetches a customer by their ID.
-     * @param id Customer ID.
-     * @return Customer details.
-     * @throws ResourceNotFoundException If the customer is not found.
-     */
+    
+    // Fetch Customer By Id
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable Integer id) throws ResourceNotFoundException {
         CustomerDto customerDto = customerService.getCustomerById(id);
@@ -63,15 +49,8 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customerDto);
     }
-
-    /**
-     * Creates a new customer.
-     * @param customerDto Customer data transfer object.
-     * @return Success message.
-     * @throws InvalidDataException If the input data is invalid.
-     * @throws BadRequestException If the request is invalid.
-     * @throws InternalServerErrorException If an error occurs during the operation.
-     */
+ 
+    // Add new Customer object in DB
     @PostMapping
     public ResponseEntity<String> createCustomer(@RequestBody @Valid CustomerDto customerDto) throws InvalidDataException, BadRequestException, InternalServerErrorException {
         if (customerDto == null || customerDto.getEmailAddress() == null || customerDto.getFullName() == null) {
@@ -80,15 +59,8 @@ public class CustomerController {
         customerService.createCustomer(customerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Record Created Successfully");
     }
-
-    /**
-     * Updates an existing customer.
-     * @param customerDto Customer data transfer object.
-     * @return Success message.
-     * @throws InvalidDataException If the input data is invalid.
-     * @throws ResourceNotFoundException If the customer does not exist.
-     * @throws InternalServerErrorException If an error occurs during the operation.
-     */
+ 
+    // Update customer by object
     @PutMapping
     public ResponseEntity<String> updateCustomer(@RequestBody @Valid CustomerDto customerDto) throws InvalidDataException, ResourceNotFoundException, InternalServerErrorException {
         if (customerDto == null || customerDto.getEmailAddress() == null || customerDto.getFullName() == null) {
@@ -97,15 +69,8 @@ public class CustomerController {
         customerService.updateCustomer(customerDto);
         return ResponseEntity.ok("Customer updated successfully");
     }
-
-    /**
-     * Deletes a customer by their ID.
-     * @param customerId Customer ID.
-     * @return Success message.
-     * @throws ResourceNotFoundException If the customer is not found.
-     * @throws BadRequestException If the customer ID is invalid.
-     * @throws InternalServerErrorException If an error occurs during the operation.
-     */
+ 
+    // Delete customer by ID
     @DeleteMapping("/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Integer customerId) throws ResourceNotFoundException, BadRequestException, InternalServerErrorException {
         if (customerId == null) {
@@ -114,16 +79,8 @@ public class CustomerController {
         customerService.deleteCustomer(customerId);
         return ResponseEntity.ok("Record deleted successfully");
     }
-
-    // Other methods follow the same pattern of comments, explaining their purpose,
-    // inputs, and exceptions. Below are brief summaries for the remaining endpoints.
-
-    /**
-     * Fetches customers by email address.
-     * @param emailId Email address of the customer(s).
-     * @return List of customers matching the email address.
-     * @throws ResourceNotFoundException If no customers are found.
-     */
+ 
+    // Search Customers Matching emailId
     @GetMapping("/email/{emailId}")
     public ResponseEntity<List<CustomerDto>> getCustomerByEmail(@PathVariable String emailId) throws ResourceNotFoundException {
         List<CustomerDto> customer = customerService.getCustomerByEmail(emailId);
@@ -132,13 +89,8 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customer);
     }
-
-    /**
-     * Fetches customers by name or name pattern.
-     * @param name Name or pattern to search for.
-     * @return List of customers matching the name.
-     * @throws ResourceNotFoundException If no customers are found.
-     */
+ 
+    // Search Customers Matching name wildcard
     @GetMapping("/name/{name}")
     public ResponseEntity<List<CustomerDto>> getCustomerByName(@PathVariable String name) throws ResourceNotFoundException {
         List<CustomerDto> customers = customerService.getCustomerByName(name);
@@ -147,6 +99,67 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customers);
     }
-
-    // Continue this pattern for other methods.
+ 
+    @GetMapping("/shipment/status")
+    public ResponseEntity<List<ShipmentStatusCountCustomer>> getOrderCountByStatus() throws InternalServerErrorException {
+        List<ShipmentStatusCountCustomer> shipmentStatusCount = customerService.getCustomerCountByStatus();
+        if (shipmentStatusCount.isEmpty()) {
+            throw new InternalServerErrorException("An error occurred while fetching shipment status count.");
+        }
+        return ResponseEntity.ok(shipmentStatusCount);
+    }
+ 
+    @GetMapping("/{custid}/order")
+    public ResponseEntity<CustomerOrders> getCustomerOrders(@PathVariable("custid") int customerId) throws ResourceNotFoundException {
+        CustomerOrders customerOrders = customerService.getCustomerOrders(customerId);
+        if (customerOrders == null || customerOrders.getCustomer() == null || customerOrders.getOrder().isEmpty()) {
+            throw new ResourceNotFoundException("Orders for the specified customer ID not found.");
+        }
+        return ResponseEntity.ok(customerOrders);
+    }
+    
+    @GetMapping("/{custid}/shipment")
+    public ResponseEntity<CustomerShipment> getCustomerShipment(@PathVariable("custid") int customerId) throws ResourceNotFoundException {
+        CustomerShipment customerShipment = customerService.getCustomerShipments(customerId);
+        if (customerShipment == null || customerShipment.getCustomer() == null) {
+            throw new ResourceNotFoundException("Shipment history for the specified customer ID not found.");
+        }
+        return ResponseEntity.ok(customerShipment);
+    }
+ 
+    @GetMapping("/shipments/pending")
+    public ResponseEntity<List<CustomerDto>> getCustomersWithPendingShipments() throws InternalServerErrorException {
+        List<CustomerDto> customers = customerService.getCustomersWithPendingShipments();
+        if (customers.isEmpty()) {
+            throw new InternalServerErrorException("No customers with pending shipments found.");
+        }
+        return ResponseEntity.ok(customers);
+    }
+ 
+    @GetMapping("/orders/complete")
+    public ResponseEntity<List<CustomerDto>> getCustomersWithCompletedOrders() throws InternalServerErrorException {
+        List<CustomerDto> customers = customerService.getCustomersWithCompletedOrders();
+        if (customers.isEmpty()) {
+            throw new InternalServerErrorException("No customers with completed orders found.");
+        }
+        return ResponseEntity.ok(customers);
+    }
+ 
+    @GetMapping("/shipments/overdue")
+    public ResponseEntity<List<CustomerDto>> getCustomersWithOverdueShipments() throws InternalServerErrorException {
+        List<CustomerDto> customers = customerService.getCustomersWithOverdueShipments();
+        if (customers.isEmpty()) {
+            throw new InternalServerErrorException("No customers with overdue shipments found.");
+        }
+        return ResponseEntity.ok(customers);
+    }
+ 
+    @GetMapping("/orders/quantity/{min}/{max}")
+    public ResponseEntity<List<CustomerDto>> getCustomersByOrderQuantityRange(@PathVariable int min, @PathVariable int max) throws BadRequestException, InternalServerErrorException {
+        if (min < 0 || max < 0 || min > max) {
+            throw new BadRequestException("Invalid quantity range.");
+        }
+        List<CustomerDto> customers = customerService.getCustomersByOrderQuantityRange(min, max);
+        return ResponseEntity.ok(customers);
+    }
 }

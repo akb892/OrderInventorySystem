@@ -31,7 +31,7 @@ public class ProductController {
      * @return ResponseEntity containing a list of all products.
      * @throws InternalServerErrorException if an internal server error occurs.
      */
-    @GetMapping
+    @GetMapping("/getall")
     public ResponseEntity<?> getAllProducts() throws InternalServerErrorException {
         List<Products> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
@@ -44,7 +44,7 @@ public class ProductController {
      * @return ResponseEntity with a success message and status code 201 (Created).
      * @throws BadRequestException if the input data is invalid.
      */
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> addProduct(@RequestBody ProductDto productDto) throws BadRequestException {
         productService.addProduct(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Record Created Successfully");
@@ -57,7 +57,7 @@ public class ProductController {
      * @return ResponseEntity with a success message.
      * @throws BadRequestException if the input data is invalid or the product does not exist.
      */
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<?> updateProduct(@RequestBody ProductDto productDto) throws BadRequestException {
         productService.updateProduct(productDto);
         return ResponseEntity.ok("Record Updated Successfully");
