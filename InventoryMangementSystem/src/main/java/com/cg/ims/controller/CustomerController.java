@@ -13,11 +13,11 @@ import com.cg.ims.dto.CustomerDto;
 import com.cg.ims.dto.CustomerOrders;
 import com.cg.ims.dto.CustomerShipment;
 import com.cg.ims.dto.ShipmentStatusCountCustomer;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
-import com.cg.ims.exception.list.UnauthorizedException;
-import com.cg.ims.exception.list.InvalidDataException;
-import com.cg.ims.exception.list.BadRequestException;
+import com.cg.ims.exception.BadRequestException;
+import com.cg.ims.exception.InternalServerErrorException;
+import com.cg.ims.exception.InvalidDataException;
+import com.cg.ims.exception.ResourceNotFoundException;
+import com.cg.ims.exception.UnauthorizedException;
 import com.cg.ims.service.interfaces.ICustomerService;
  
 import jakarta.validation.Valid;

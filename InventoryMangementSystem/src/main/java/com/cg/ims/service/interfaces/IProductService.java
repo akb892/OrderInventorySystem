@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.cg.ims.dto.ProductDto;
 import com.cg.ims.entity.Products;
-import com.cg.ims.exception.list.BadRequestException;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
+import com.cg.ims.exception.BadRequestException;
+import com.cg.ims.exception.InternalServerErrorException;
+import com.cg.ims.exception.ResourceNotFoundException;
 
 public interface IProductService {
 

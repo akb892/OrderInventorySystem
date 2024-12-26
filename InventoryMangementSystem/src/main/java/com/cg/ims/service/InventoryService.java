@@ -13,8 +13,8 @@ import com.cg.ims.dto.ProductDto;
 import com.cg.ims.dto.ShipmentsDto;
 import com.cg.ims.dto.StoresDto;
 import com.cg.ims.entity.Inventory;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
+import com.cg.ims.exception.InternalServerErrorException;
+import com.cg.ims.exception.ResourceNotFoundException;
 import com.cg.ims.service.interfaces.IInventoryService;
 
 import jakarta.validation.Valid;

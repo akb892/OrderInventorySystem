@@ -15,10 +15,10 @@ import com.cg.ims.dto.ShipmentsDto;
 import com.cg.ims.entity.Customers;
 import com.cg.ims.entity.Orders;
 import com.cg.ims.entity.Shipments;
-import com.cg.ims.exception.list.BadRequestException;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.InvalidDataException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
+import com.cg.ims.exception.BadRequestException;
+import com.cg.ims.exception.InternalServerErrorException;
+import com.cg.ims.exception.InvalidDataException;
+import com.cg.ims.exception.ResourceNotFoundException;
 
 public interface ICustomerService {
     

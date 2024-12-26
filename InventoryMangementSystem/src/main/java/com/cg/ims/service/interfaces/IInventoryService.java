@@ -3,8 +3,8 @@ package com.cg.ims.service.interfaces;
 import java.util.List;
 import java.util.Map;
 import com.cg.ims.entity.Inventory;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
+import com.cg.ims.exception.InternalServerErrorException;
+import com.cg.ims.exception.ResourceNotFoundException;
 
 public interface IInventoryService {
 

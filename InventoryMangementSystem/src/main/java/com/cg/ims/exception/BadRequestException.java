@@ -1,4 +1,4 @@
-package com.cg.ims.exception.list;
+package com.cg.ims.exception;
 
 /**
  * Custom exception class that represents a bad request scenario.

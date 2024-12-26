@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.ims.entity.Inventory;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
+import com.cg.ims.exception.InternalServerErrorException;
+import com.cg.ims.exception.ResourceNotFoundException;
 import com.cg.ims.service.InventoryService;
 
 /**

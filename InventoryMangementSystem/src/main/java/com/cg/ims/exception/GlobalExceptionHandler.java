@@ -10,12 +10,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.cg.ims.exception.list.BadRequestException;
-import com.cg.ims.exception.list.InternalServerErrorException;
-import com.cg.ims.exception.list.InvalidDataException;
-import com.cg.ims.exception.list.ResourceNotFoundException;
-import com.cg.ims.exception.list.UnauthorizedException;
-
 /**
  * A centralized exception handler for the entire application.
  * This class uses @ControllerAdvice to intercept exceptions and return appropriate HTTP responses.
