@@ -23,8 +23,7 @@ public class OrdersDto {
      * Unique identifier for the order.
      * Cannot be null or blank.
      */
-    @NotNull(message = "Order id cannot be null")
-    @NotBlank(message = "Order id cannot be blank")
+    
     private int orderID;
 
     /**

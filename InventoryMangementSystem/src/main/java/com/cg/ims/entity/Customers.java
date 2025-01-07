@@ -33,6 +33,7 @@ public class Customers {
 
     // A customer can have multiple orders, linked by the "customer" field in Orders class
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Cascade all operations (persist, remove, etc.)
+    
     private List<Orders> order;
 
     // A customer can have multiple shipments, linked by the "customer" field in Shipments class

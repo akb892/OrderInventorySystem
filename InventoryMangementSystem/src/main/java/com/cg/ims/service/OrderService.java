@@ -67,7 +67,7 @@ public class OrderService implements IOrdersService {
     @Override
     public OrdersDto createNewOrders(OrdersDto od) throws BadRequestException {
         Orders o = new Orders();
-        Optional<Orders> op = repo.findById(od.getOrderID());
+        Optional<Customers> op = repo1.findById(od.getCustomer().getCustomerId());
         if (op.isPresent()) {
             throw new BadRequestException("Invalid Request. Please provide Valid order Data for creation");
         } else {
